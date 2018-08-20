@@ -1,0 +1,65 @@
+import java.text.SimpleDateFormat
+import java.util.Date
+
+logger.level("FINE")
+
+val initialDensity = Val[Double]
+//val birthDensity = Val[Double]
+//val birthInterval = Val[Double]
+val withSex = Val[Boolean]
+
+val livingProp = Val[Double]
+val livingPropRed = Val[Double]
+val livingPropGreen = Val[Double]
+val livingPropBlue = Val[Double]
+val bornProp = Val[Double]
+val deadProp = Val[Double]
+val changedProp = Val[Double]
+
+val id = Val[Int]
+val replication = Val[Int]
+
+val cmds = Seq("setup-experiment ${initialDensity} ${withSex} 5000","run-experiment")
+
+val model = NetLogo6Task(workDirectory / "HEADLESS_ExtendedGameOfLife.nlogo",cmds,embedWorkspace=true,reuseWorkspace=true) set(
+    inputs += (initialDensity,withSex,id,replication),
+    outputs += (initialDensity,withSex,id,replication),
+    outputs += livingProp mapped "living-proportion",
+    outputs += livingPropRed mapped "living-subpop-proportion red",
+    outputs += livingPropGreen mapped "living-subpop-proportion green",
+    outputs += livingPropBlue mapped "living-subpop-proportion blue",
+    outputs += bornProp mapped "born-proportion",
+    outputs += deadProp mapped "dead-proportion",
+    outputs += changedProp mapped "changed-proportion"
+  )
+
+//val purpose = "DIRECTSAMPLING"
+val purpose = "TEST"
+
+val indics_hook = AppendToCSVFileHook(workDirectory / "exploration" / ((new SimpleDateFormat("yyyyMMdd_HHmmss")).format(new Date()))+"_"+purpose+".csv")
+
+//val env = EGIEnvironment("vo.complex-systems.eu",openMOLEMemory = 1000 megabytes)
+val env = LocalEnvironment(50)
+
+
+val replications =
+ Replication (
+   //evaluation = (model on env by 100 hook indics_hook),
+   evaluation = (model on env hook indics_hook),
+   seed = replication,
+   //replications = 200
+   replications = 50
+)
+
+val exploration =
+  DirectSampling(
+    evaluation = replications,
+    sampling = (
+      (
+	      (initialDensity in (1.0 to 100.0 by 1.0))
+       x (withSex in Seq(true,false))
+      )
+         withIndex id )
+  )
+
+exploration

@@ -1,0 +1,52 @@
+
+
+;;
+; transition rule (hardcoded)
+to-report patch-next-state
+  let numalive sum [state] of neighbors
+  ifelse state = 1 [
+    ifelse numalive < 2 or numalive > 3 [set changed? true report 0]
+    [set changed? false report 1]
+  ][
+    ifelse numalive = 3 [
+      ifelse with-sex? [
+        ; check if mating is possible within neighbors -> if sum genders = 3 or 0
+        let sumgenders sum [gender] of neighbors
+        ifelse sumgenders = 0 or sumgenders = 3 [set changed? false report 0][
+          ; new individual born with random gender
+          set changed? true set gender random 2 report 1
+          ; find color
+          if sumgenders = 1 [set cell-color [cell-color] of one-of neighbors with [gender = 1]]
+          if sumgenders = 2 [set cell-color [cell-color] of one-of neighbors with [gender = 0]]
+        ]
+      ][
+        ; if no sex, do not change gender
+        set changed? true report 1
+      ]
+    ][
+      set changed? false report 0
+    ] 
+  ]
+end
+
+
+;;
+;  constructor for a random new patch
+to random-new-patch [newstate]
+  ;set state random 2
+  ;set state patch-initial-state
+   set state newstate  
+  
+    set changed? true
+    set gender random 2
+    
+    ; random initial color
+    set cell-color one-of [red green blue] 
+end
+
+
+;;
+; initial state
+to-report patch-initial-state
+  ifelse random-float 100 < initial-density [report 1][report 0]
+end

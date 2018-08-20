@@ -1,0 +1,41 @@
+
+;;
+;
+
+
+to go
+  
+  if ticks mod 500 = 0 [show ticks]
+  
+  update-states
+  
+  rebirth-cells
+  
+  color-patches
+  
+  update-indicators
+  
+  tick
+  
+end
+
+
+;;
+; update patch states
+to update-states
+  ask patches [
+    set next-state patch-next-state 
+  ]
+  
+  ask patches [set state next-state]
+end
+
+
+;;
+; randomly rebirth cells to sustain life
+to rebirth-cells
+  if ticks mod birth-interval = 0 [
+    let birth-number min (list count patches with [state = 0] (floor birth-density * count patches / 100))
+    ask n-of birth-number (patches with [state = 0]) [random-new-patch 1]
+  ]
+end

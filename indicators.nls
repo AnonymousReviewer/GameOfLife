@@ -1,0 +1,53 @@
+
+
+;;
+; track indics
+to update-indicators
+  
+  if ticks = 10 [clear-all-plots]
+  
+  foreach tracked-indicators [? ->
+    table:put ts-indicators-values (list ticks ?) (runresult ?)
+  ]
+end
+
+
+
+;;
+; proportion of living cells
+to-report living-proportion
+  report count patches with [state = 1] / count patches
+end
+
+
+to-report living-subpop-proportion [col]
+  report count patches with [state = 1 and cell-color = col] / count patches
+end
+
+
+;;
+; propoprtion of newly born
+to-report born-proportion
+  report count patches with [state = 1 and changed? = true] / count patches
+end
+
+;;
+; proportion of changed (born or dead)
+to-report changed-proportion
+  report count patches with [changed? = true] / count patches
+end
+
+; note : dead-proportion is cnaged - born
+; implement it for convenience
+
+to-report dead-proportion
+  report count patches with [state = 1 and changed? = true] / count patches
+end
+
+
+;;
+; position of the center of mass
+to-report life-center-of-mass
+  report (list (sum [state * pxcor] of patches / sum [state] of patches) (sum [state * pycor] of patches / sum [state] of patches))
+end
+

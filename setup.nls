@@ -1,0 +1,41 @@
+
+;;
+; setup
+to setup
+  
+  if headless? = 0 [ca]
+  
+  setup-patches
+  
+  setup-indicators
+  
+  color-patches
+  
+  reset-ticks
+  
+end
+
+
+
+to setup-patches
+  
+  ask patches [
+    set pcolor white
+    
+    random-new-patch patch-initial-state
+  ]
+  
+  
+end
+
+
+
+to setup-indicators
+  set tracked-indicators [
+    "living-proportion" "born-proportion" "changed-proportion"
+    "living-subpop-proportion red" "living-subpop-proportion green" "living-subpop-proportion blue"
+  ]
+  
+  set ts-indicators-values table:make 
+  
+end

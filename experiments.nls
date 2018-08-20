@@ -1,0 +1,43 @@
+
+;;
+; experiments
+
+
+;;
+; setup
+to setup-experiment [initdensity withsex finaltime]
+  
+  set headless? true
+  
+  set birth-density 0
+  set birth-interval 1
+  
+  set initial-density initdensity
+  set with-sex? withsex
+  set final-time finaltime
+  
+  
+  setup
+  
+end
+
+
+;;
+; run
+to run-experiment
+  
+  repeat final-time [
+    go 
+  ]
+  
+  ; report indicators
+  
+end
+
+
+;;
+; test
+to test-experiment
+  setup-experiment 60 false 10000
+  run-experiment
+end

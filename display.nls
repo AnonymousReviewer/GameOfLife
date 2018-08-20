@@ -1,0 +1,20 @@
+
+to color-patches
+  ;ask patches [set pcolor black]
+  ;ask patches with [state = 0] [set pcolor white]
+  
+  ; no gender
+  ;ask patches with [changed? = true] [ifelse state = 0 [set pcolor white][set pcolor black]]
+  
+  ask patches with [changed? = true] [
+    ask turtles-here [die]
+    if state = 1 [
+    sprout 1 [
+      set color cell-color
+      ifelse gender = 0 [set shape "square"][set shape "circle"]
+    ]
+    ]
+  ]
+  
+  
+end
