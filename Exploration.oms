@@ -15,11 +15,12 @@ val livingPropBlue = Val[Double]
 val bornProp = Val[Double]
 val deadProp = Val[Double]
 val changedProp = Val[Double]
+val livingVar = Val[Double]
 
 val id = Val[Int]
 val replication = Val[Int]
 
-val cmds = Seq("setup-experiment ${initialDensity} ${withSex} 5000","run-experiment")
+val cmds = Seq("setup-experiment ${initialDensity} ${withSex} 500","run-experiment")
 
 val model = NetLogo6Task(workDirectory / "HEADLESS_ExtendedGameOfLife.nlogo",cmds,embedWorkspace=true,reuseWorkspace=true) set(
     inputs += (initialDensity,withSex,id,replication),
@@ -30,7 +31,8 @@ val model = NetLogo6Task(workDirectory / "HEADLESS_ExtendedGameOfLife.nlogo",cmd
     outputs += livingPropBlue mapped "living-subpop-proportion blue",
     outputs += bornProp mapped "born-proportion",
     outputs += deadProp mapped "dead-proportion",
-    outputs += changedProp mapped "changed-proportion"
+    outputs += changedProp mapped "changed-proportion",
+    outputs += livingVar mapped "timeint-living-derivative"
   )
 
 //val purpose = "DIRECTSAMPLING"
