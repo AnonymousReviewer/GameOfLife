@@ -137,6 +137,24 @@ false
 PENS
 "default" 1.0 0 -16777216 true "" "let cm life-center-of-mass plot (sqrt ((first cm)^ 2 + (last cm)^ 2))"
 
+PLOT
+1106
+353
+1361
+516
+dn
+NIL
+NIL
+0.0
+10.0
+0.0
+0.01
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot timeint-living-derivative"
+
 @#$#@#$#@
 ## WHAT IS IT?
 

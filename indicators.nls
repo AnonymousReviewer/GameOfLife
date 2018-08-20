@@ -12,6 +12,19 @@ to update-indicators
 end
 
 
+;;
+; possible more elaborated indicator : moving window average of derivative of living ? -> allows to spot a "still end-of-life" scenario
+
+to-report timeint-living-derivative
+  let t 0 let res 0
+  if ticks < 100 [report 0]
+  repeat 100 [
+    set res res + ((table:get ts-indicators-values (list (ticks - t) "living-proportion")) - (table:get ts-indicators-values (list (ticks - t - 1) "living-proportion")))
+    set t t + 1
+  ]
+  report res
+end
+
 
 ;;
 ; proportion of living cells
@@ -48,6 +61,7 @@ end
 ;;
 ; position of the center of mass
 to-report life-center-of-mass
+  if sum [state] of patches = 0 [report [0 0]]
   report (list (sum [state * pxcor] of patches / sum [state] of patches) (sum [state * pycor] of patches / sum [state] of patches))
 end
 
