@@ -5,8 +5,9 @@
 
 to go
   
-  if ticks mod 500 = 0 [show ticks]
-  
+  ;if ticks mod 500 = 0 [show ticks]
+  show ticks  
+
   update-states
   
   rebirth-cells

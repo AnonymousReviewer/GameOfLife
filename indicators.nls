@@ -19,7 +19,7 @@ to-report timeint-living-derivative
   let t 0 let res 0
   if ticks < 100 [report 0]
   repeat 100 [
-    set res res + ((table:get ts-indicators-values (list (ticks - t) "living-proportion")) - (table:get ts-indicators-values (list (ticks - t - 1) "living-proportion")))
+    set res res + ((table:get ts-indicators-values (list (ticks - t - 1) "living-proportion")) - (table:get ts-indicators-values (list (ticks - t - 2) "living-proportion")))
     set t t + 1
   ]
   report res

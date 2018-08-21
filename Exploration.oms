@@ -20,7 +20,7 @@ val livingVar = Val[Double]
 val id = Val[Int]
 val replication = Val[Int]
 
-val cmds = Seq("setup-experiment ${initialDensity} ${withSex} 500","run-experiment")
+val cmds = Seq("setup-experiment ${initialDensity} ${withSex} 10000","run-experiment")
 
 val model = NetLogo6Task(workDirectory / "HEADLESS_ExtendedGameOfLife.nlogo",cmds,embedWorkspace=true,reuseWorkspace=true) set(
     inputs += (initialDensity,withSex,id,replication),
@@ -35,22 +35,22 @@ val model = NetLogo6Task(workDirectory / "HEADLESS_ExtendedGameOfLife.nlogo",cmd
     outputs += livingVar mapped "timeint-living-derivative"
   )
 
-//val purpose = "DIRECTSAMPLING"
-val purpose = "TEST"
+val purpose = "DIRECTSAMPLING"
+//val purpose = "TEST"
 
 val indics_hook = AppendToCSVFileHook(workDirectory / "exploration" / ((new SimpleDateFormat("yyyyMMdd_HHmmss")).format(new Date()))+"_"+purpose+".csv")
 
-//val env = EGIEnvironment("vo.complex-systems.eu",openMOLEMemory = 1000 megabytes)
-val env = LocalEnvironment(50)
+val env = EGIEnvironment("vo.complex-systems.eu",openMOLEMemory = 2000 megabytes)
+//val env = LocalEnvironment(2)
 
 
 val replications =
  Replication (
-   //evaluation = (model on env by 100 hook indics_hook),
-   evaluation = (model on env hook indics_hook),
+   evaluation = (model on env by 20 hook indics_hook),
+   //evaluation = (model on env hook indics_hook),
    seed = replication,
-   //replications = 200
-   replications = 50
+   replications = 200
+   //replications = 1
 )
 
 val exploration =
