@@ -13,6 +13,19 @@ end
 
 
 ;;
+; full traj of living density - each 10 time step
+to-report living-trajectory
+  let tf (ticks - 1)
+  let res []
+  let t 1 repeat ((tf / 10) - 1) [
+    set res lput (table:get ts-indicators-values (list t "living-proportion")) res
+    set t t + 10 
+  ]
+  report res
+end
+
+
+;;
 ; possible more elaborated indicator : moving window average of derivative of living ? -> allows to spot a "still end-of-life" scenario
 
 to-report timeint-living-derivative

@@ -1,4 +1,3 @@
-
 extensions [table]
 
 __includes [
@@ -115,7 +114,7 @@ initial-density
 initial-density
 0
 100
-81.0
+50.0
 1
 1
 NIL
