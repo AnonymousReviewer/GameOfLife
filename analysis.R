@@ -5,12 +5,21 @@ library(ggplot2)
 #setwd(paste0(Sys.getenv('CS_HOME'),'/Reviews/'))
 source(paste0(Sys.getenv('CS_HOME'),'/Organisation/Models/Utils/R/plots.R'))
 
-res<- as.tbl(read.csv('exploration/20180820_115310_DIRECTSAMPLING.csv'))
+#res<- as.tbl(read.csv('exploration/20180820_115310_DIRECTSAMPLING.csv'))
+res<- as.tbl(read.csv('exploration/20180821_182707_DIRECTSAMPLING.csv'))
+
+#bornProp,changedProp,deadProp,id,initialDensity,livingProp,livingPropBlue"","livingPropGreen","livingPropRed","livingTraj","livingVar"","replication","withSex"
+res$time = rep(1:(nrow(res)/length(unique(res$replication))),length(unique(res$replication)))
 
 g=ggplot(res,aes(x=initialDensity,y=livingProp,group=withSex,color=withSex))
 g+geom_point(pch='.')+geom_smooth()
 # -> smoothed plot not appropriate
 
+sres=res %>% group_by(time,withSex,initialDensity) %>% summarise(livingProp=mean(livingProp))
+
+g=ggplot(sres[sres$withSex=="false",],aes(x=time,y=initialDensity,fill=livingProp))
+g+geom_raster()
+# strange
 
 sres = res %>% group_by(initialDensity,withSex) %>% summarize(
   livingPropSd = sd(livingProp),livingProp = mean(livingProp)
