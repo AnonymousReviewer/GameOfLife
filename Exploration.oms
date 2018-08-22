@@ -39,22 +39,22 @@ val model = NetLogo6Task(workDirectory / "HEADLESS_ExtendedGameOfLife.nlogo",cmd
     outputs += livingTraj mapped "living-trajectory"
   )
 
-//val purpose = "DIRECTSAMPLING"
-val purpose = "TEST"
+val purpose = "DIRECTSAMPLING"
+//val purpose = "TEST"
 
 val indics_hook = AppendToCSVFileHook(workDirectory / "exploration" / ((new SimpleDateFormat("yyyyMMdd_HHmmss")).format(new Date()))+"_"+purpose+".csv")
 
-//val env = EGIEnvironment("vo.complex-systems.eu",openMOLEMemory = 2000 megabytes)
-val env = LocalEnvironment(2)
+val env = EGIEnvironment("vo.complex-systems.eu",openMOLEMemory = 2000 megabytes)
+//val env = LocalEnvironment(2)
 
 
 val replications =
  Replication (
-   //evaluation = (model on env by 20 hook indics_hook),
-   evaluation = (model on env hook indics_hook),
+   evaluation = (model on env by 20 hook indics_hook),
+   //evaluation = (model on env hook indics_hook),
    seed = replication,
-   //replications = 200
-   replications = 1
+   replications = 200
+   //replications = 1
 )
 
 val exploration =
@@ -62,7 +62,7 @@ val exploration =
     evaluation = replications,
     sampling = (
       (
-	      (initialDensity in (1.0 to 100.0 by 100.0))
+	      (initialDensity in (1.0 to 100.0 by 1.0))
        x (withSex in Seq(true,false))
       )
          withIndex id )
